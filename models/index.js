@@ -10,7 +10,7 @@ const listContacts = async () => {
   return data;
 }
 
-const getContactById = async (contactId) => {
+const getById = async (contactId) => {
   const allContacts = await listContacts();
   const result = allContacts.find(contact => contact.id === contactId);
   // eslint-disable-next-line no-unneeded-ternary
@@ -41,19 +41,24 @@ const addContact = async (name, email, phone) => {
   return newContact;
 }
 
-const updateContact = async (contactId, body) => {
+const updateContact = async (contactId, name, email, phone) => {
   const allContacts = await listContacts();
-  const result = allContacts.find(contact => contact.id === contactId);
-  const updateContact = result.JSON({id: contactId, body});
-  allContacts.push(updateContact);
-  await fs.writeFile(contactsPath, JSON.stringify(allContacts));
-  return updateContact || null;
-
+  const contactIndex = allContacts.findIndex(contact => contact.id === contactId);
+  if(contactIndex !== -1){
+    allContacts[contactIndex].name = name;
+    allContacts[contactIndex].email = email;
+    allContacts[contactIndex].phone = phone;
+    
+    await fs.writeFile(contactsPath, JSON.stringify(allContacts, null, 2));
+    return allContacts[contactIndex];
+  } else {
+    return null;
+  }
 }
 
 module.exports = {
   listContacts,
-  getContactById,
+  getById,
   removeContact,
   addContact,
   updateContact,
