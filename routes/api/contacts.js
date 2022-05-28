@@ -4,17 +4,17 @@ const contacts = require('../../models');
 const {createError} = require('../../errors');
 const Joi = require('joi');
 
-const schema = Joi.object({
-  email: Joi.string().min(5).required(),
-  name: Joi.string().min(3).required(),
-  phone: Joi.number().min(0.1).required(),
-})
+const schemaCreate = Joi.object({
+  email: Joi.string().min(5),
+  name: Joi.string().min(3),
+  phone: Joi.number().min(0.1),
+}).min(3).message("missing required name field");
 
-const parametrPUT = Joi.object({
-  email: Joi.string().min(5).required(any),
-  name: Joi.string().min(3).required(any),
-  phone: Joi.number().min(0.1).required(any),
-})
+const schemaUpdate = Joi.object({
+  email: Joi.string().min(5),
+  name: Joi.string().min(3),
+  phone: Joi.number().min(0.1),
+}).min(1).message("missing fields");
 
 router.get('/', async (req, res, next) => {
   try{
@@ -40,7 +40,7 @@ router.get('/:contactId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try{
-    const {error} = schema.validate(req.body);
+    const {error} = schemaCreate.validate(req.body);
     if(error){
       throw createError(400, error.message);
     }
@@ -66,12 +66,11 @@ router.delete('/:contactId', async (req, res, next) => {
   } catch (e){
     next(e);
   }
-
 });
 
 router.put('/:contactId', async (req, res, next) => {
   try{
-    const {error} = parametrPUT.validate(req.body);
+    const {error} = schemaUpdate.validate(req.body);
     if(error){
       throw createError(400, error.message);
     }
