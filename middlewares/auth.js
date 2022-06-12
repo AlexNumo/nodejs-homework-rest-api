@@ -1,5 +1,5 @@
 const {authenticateUser} = require('../services/auth.service');
-const authError = {status: 401, message: 'Bad credentials'};
+const authError = {status: 401, message: 'Not authorized'};
 
 const auth = async (req, res, next) => {
      const {authorization = ""} = req.headers;
@@ -17,7 +17,6 @@ const auth = async (req, res, next) => {
      next();
 }
 
-
 module.exports = {
-    auth,
+    auth, 
 };

@@ -17,8 +17,8 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     try {
-        const token = await authService.loginUser(req.body);
-        res.json(token);
+        const {token, email, subscription} = await authService.loginUser(req.body);
+        res.json({token, email, subscription});
     } catch (e) {
         next(e);
     }
