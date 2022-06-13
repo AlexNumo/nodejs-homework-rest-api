@@ -1,16 +1,16 @@
 const express = require('express');
-const {listContacts, getById, addContact, updateContact, removeContact, updateFavorite} = require('../../controllers/controlles');
+const {listContacts, getById, addContact, updateContact, removeContact, updateFavorite} = require('../../controllers/contacts');
 const router = express.Router();
 const {schemaPatch, schemaCreate} = require('../../models/contact');
-const {validateRequest} = require('../../middlewares/validateRequest');
+const {validateRequest, auth, validateId} = require('../../middlewares');
 
 
-router.get('/', listContacts);
+router.get('/', auth, listContacts);
 // TODO: add validation for id using mongoose function isValidObjectId (for sending correct status)
-router.get('/:id', getById);
-router.post('/', validateRequest(schemaCreate), addContact);
-router.put('/:id', updateContact);
-router.patch('/:id/favorite', validateRequest(schemaPatch), updateFavorite);
-router.delete('/:id', removeContact);
+router.get('/:id', validateId, getById);
+router.post('/', validateRequest(schemaCreate), auth, addContact);
+router.put('/:id', validateId, auth, updateContact);
+router.patch('/:id/favorite', validateId, validateRequest(schemaPatch), updateFavorite);
+router.delete('/:id', validateId, auth, removeContact);
 
 module.exports = router;
