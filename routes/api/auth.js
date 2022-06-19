@@ -13,4 +13,5 @@ router.post('/login', validateRequest(schemaLogin), loginUser);
 router.get('/logout', auth, logoutUser);
 router.get('/current', auth, getCurrent)
 
+
 module.exports = router;

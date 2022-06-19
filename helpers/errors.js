@@ -1,3 +1,12 @@
+// Class version
+class ValidationError extends Error {
+    constructor(status, message) {
+        super(message);
+        this.status = status
+    }
+}
+
+// Function version
 const createError = (status, message) => {
     const e = new Error();
     e.status = status;
@@ -7,5 +16,5 @@ const createError = (status, message) => {
 }
 
 module.exports = {
-    createError
+    createError, ValidationError
 }
