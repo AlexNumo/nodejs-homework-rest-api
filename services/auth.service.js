@@ -4,10 +4,6 @@ const bcrypt = require('bcryptjs');
 const {SECRET_KEY} = require("../helpers/env");
 const jwt = require('jsonwebtoken');
 
-
-// 1. if User exists in our db -> send error status 409;
-// 2. if it is a new User -> hash and salt password -> save User to DB
-
 const registerUser = async (userData) => {
     const result = await User.findOne({email: userData.email});
     if(result) {
